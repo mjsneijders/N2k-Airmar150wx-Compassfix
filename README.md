@@ -1,13 +1,21 @@
 # N2k-Airmar150wx-Compassfix
+
 filter and substiture crappy output from Airmar 150Wx
 
 using arduino due,  and both it's can controllers
+
 -substiture wmm2020 variation
+
 -filter out uncompensated compass heading
+
 -filter out truewind direction (its calculated using uncompensated compass)
+
 -add proper truewind direction calculated from other compass, and wmm2020 variation
+
 -add truewind angle... (airmar didnt even supply it in the first place
+
 -passthrough everything else coming from the airmar
+
 
 N2k needed libraries:
 
