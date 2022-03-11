@@ -24,9 +24,9 @@ void tN2kInnerHandler::HandleMsg(const tN2kMsg &N2kMsg) {
     case 129540UL: PassPGN(N2kMsg);break;         //GNSS Sats in view
     case 130306UL: HandleWind(N2kMsg);break;      //Wind data
     case 130311UL: PassPGN(N2kMsg);break;         //Environmental parameters
-    case 130312UL: PassPGN(N2kMsg);break          //Temperature
-    case 130314UL: PassPGN(N2kMsg);break          //Actual Pressure
-    case 130323UL: PassPGN(N2kMsg);break          //Meteorological Station Data
+    case 130312UL: PassPGN(N2kMsg);break;          //Temperature
+    case 130314UL: PassPGN(N2kMsg);break;         //Actual Pressure
+    case 130323UL: PassPGN(N2kMsg);break;        //Meteorological Station Data
     default: PassPGN(N2kMsg);break;
   }
 }
