@@ -9,7 +9,6 @@ extern tBoatData Boatdata;
 
 void tN2kOuterHandler::HandleMsg(const tN2kMsg &N2kMsg) {
   switch (N2kMsg.PGN) {
-    case 60928UL: PassPGN(N2kMsg);break;  //ISO address claim
     case 127250UL: HandleHeading(N2kMsg);break; 
     default: FilterPGN(N2kMsg);break;
   }

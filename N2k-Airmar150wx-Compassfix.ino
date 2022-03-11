@@ -34,7 +34,7 @@ uint32_t GetSerialNumber() {
 tNMEA2000 &NMEA2000_2=*(new tNMEA2000_due(tNMEA2000_due::CANDevice1));
 tN2kInnerHandler N2kInnerHandler(&NMEA2000);
 tN2kOuterHandler N2kOuterHandler(&NMEA2000_2);
-const unsigned long TransmitMessages[] PROGMEM={127258L,129025L,129026L,129029L,129539L,129540L,130306L,0};
+const unsigned long TransmitMessages[] PROGMEM={126992L,126993L,127258L,129025L,129026L,129029L,129033L,129044L129539L,129540L,130306L,130311L,130312L,130314L,130323L,0};
 
 //  NMEA2000 object,   inner canbus
 void setup_can1(){
@@ -67,7 +67,7 @@ void setup_can1(){
     NMEA2000.SetMode(tNMEA2000::N2km_ListenAndNode,36);
     //NMEA2000.SetDebugMode(tNMEA2000::dm_Actisense); // Uncomment this, so you can test code without CAN bus chips on Arduino Mega
     NMEA2000.EnableForward(false); // Disable all msg forwarding to USB (=Serial)
-    NMEA2000.ExtendTransmitMessages(TransmitMessages);
+    //NMEA2000.ExtendTransmitMessages(TransmitMessages);
     NMEA2000.AttachMsgHandler(&N2kInnerHandler);
     NMEA2000.Open();
 }

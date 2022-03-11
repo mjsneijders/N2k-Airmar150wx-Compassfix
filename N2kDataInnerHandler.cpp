@@ -9,20 +9,29 @@ extern tBoatData Boatdata;
 
 void tN2kInnerHandler::HandleMsg(const tN2kMsg &N2kMsg) {
   switch (N2kMsg.PGN) {
-    case 60928UL: FilterPGN(N2kMsg);break;  //ISO address claim
-    case 127250UL: FilterPGN(N2kMsg);break; //heading
-    //case 127250UL: HandleHeading(N2kMsg);break; //heading
-    case 127258UL: FilterPGN(N2kMsg);; break; //variation
-    case 129025UL: HandlePosition(N2kMsg); break; //GPS position 
-    case 129029UL: HandleGNSS(N2kMsg);break; //GPS GNSS data
-    case 129026UL: HandleCOGSOG(N2kMsg);break; //GPS COG&SOG data
-    case 130306UL: HandleWind(N2kMsg);break;  //Wind data
+    case 60928UL: FilterPGN(N2kMsg);break;        //ISO address claim
+    case 126992UL: PassPGN(N2kMsg);break;         //System Time
+    case 126993UL: PassPGN(N2kMsg);break;         //Heartbeat 
+    case 127250UL: FilterPGN(N2kMsg);break;       //Heading
+    case 127257UL: FilterPGN(N2kMsg);break;       //Attitude
+    case 127258UL: FilterPGN(N2kMsg); break;      //Variation
+    case 129025UL: PassPGN(N2kMsg);HandlePosition(N2kMsg); break; //GPS position, Rapid Update
+    case 129026UL: PassPGN(N2kMsg);HandleCOGSOG(N2kMsg);break;    //GPS COG&SOG, Rapid Update
+    case 129029UL: PassPGN(N2kMsg);HandleGNSS(N2kMsg);break;      //GPS GNSS Position data
+    case 129033UL: PassPGN(N2kMsg);break;         //Local Time offset
+    case 129044UL: PassPGN(N2kMsg);break;         //Datum
+    case 129539UL: PassPGN(N2kMsg);break;         //GNSS DOPs
+    case 129540UL: PassPGN(N2kMsg);break;         //GNSS Sats in view
+    case 130306UL: HandleWind(N2kMsg);break;      //Wind data
+    case 130311UL: PassPGN(N2kMsg);break;         //Environmental parameters
+    case 130312UL: PassPGN(N2kMsg);break          //Temperature
+    case 130314UL: PassPGN(N2kMsg);break          //Actual Pressure
+    case 130323UL: PassPGN(N2kMsg);break          //Meteorological Station Data
     default: PassPGN(N2kMsg);break;
   }
 }
 
 void tN2kInnerHandler::HandleHeading(const tN2kMsg &N2kMsg) {
-  //NMEA2000_2.SendMsg(N2kMsg);
   unsigned char SID;
   tN2kHeadingReference ref;
   double _Deviation = 0;
@@ -45,7 +54,6 @@ void tN2kInnerHandler::FilterPGN(const tN2kMsg &N2kMsg) {
   //filter this message
 }
 void tN2kInnerHandler::HandleCOGSOG(const tN2kMsg &N2kMsg) {
-    NMEA2000_2.SendMsg(N2kMsg);
     if ( N2kMsg.Source == Boatdata.Position.N2kSource || Boatdata.Position.N2kSource == 255 ){ 
         unsigned char SID;
         tN2kHeadingReference HeadingReference;
@@ -126,8 +134,6 @@ void tN2kInnerHandler::HandleWind(const tN2kMsg &N2kMsg) {
   }
 }
 void tN2kInnerHandler::HandlePosition(const tN2kMsg &N2kMsg) {
-    //forward this message
-    NMEA2000_2.SendMsg(N2kMsg);
     if ( N2kMsg.Source == Boatdata.Position.N2kSource || Boatdata.Position.N2kSource == 255 ){ 
           if ( ParseN2kPGN129025(N2kMsg,
                                  Boatdata.Position.Latitude, 
@@ -138,7 +144,6 @@ void tN2kInnerHandler::HandlePosition(const tN2kMsg &N2kMsg) {
      }
 }
 void tN2kInnerHandler::HandleGNSS(const tN2kMsg &N2kMsg) {
-       NMEA2000_2.SendMsg(N2kMsg);
        if ( N2kMsg.Source == Boatdata.Position.N2kSource || Boatdata.Position.N2kSource == 255 ){ 
             unsigned char SID;
               if ( ParseN2kGNSS(N2kMsg,
