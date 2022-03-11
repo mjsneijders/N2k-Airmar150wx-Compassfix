@@ -4,7 +4,7 @@ filter and substiture crappy output from Airmar 150Wx
 
 using arduino due,  and both it's can controllers
 
--substiture wmm2020 variation
+-substitute wmm2020 variation
 
 -filter out uncompensated compass heading
 
