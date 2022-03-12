@@ -21,7 +21,7 @@ Configuration configuration;
 #include <wmm.h>
 
 tBoatData Boatdata;
-
+int watchdogTime = 5000;
 #define DefaultSerialNumber 999999
 uint32_t GetSerialNumber() {
   uint32_t Sno=GetBoardSerialNumber();
@@ -147,9 +147,17 @@ uint8_t codeRunningForTheFirstTime = dueFlashStorage.read(0); // flash bytes wil
   }
 }
   
-
+// this function has to be present, otherwise watchdog won't work
+void watchdogSetup(void) 
+{
+// do what you want here
+}
 
 void setup() {
+    delay(2000); 
+    watchdogEnable(watchdogTime);
+    pinMode(LED_BUILTIN, OUTPUT);
+    digitalWrite(LED_BUILTIN, HIGH);
     wmm_init(); 
     Serial.begin(115200);
     setup_can1(); 
@@ -162,17 +170,24 @@ void loop() {
     NMEA2000.ParseMessages();
     NMEA2000_2.ParseMessages();
     N2kSendVariation();
+    //BlinkLed(); 
 }
 
 #define VariationUpdatePeriod 1000
+void BlinkLed(){
+  static bool onoff = LOW; 
+  watchdogReset();
+  onoff = !onoff; 
+  Serial.println ((String)"led is now " + onoff); 
+  digitalWrite(LED_BUILTIN,onoff); 
+}
 
 void N2kSendVariation() {
-
   static unsigned long TimeUpdated=millis();
   static unsigned char SID=0; 
   tN2kMsg N2kMsg;
    if  (millis() - TimeUpdated >= VariationUpdatePeriod ){
-      TimeUpdated=millis();
+    TimeUpdated=millis();
     if ( Boatdata.Position.Lastupdate > 0 ){
           SID++; 
           float Variation;
@@ -190,12 +205,14 @@ void N2kSendVariation() {
           Boatdata.Heading.Variation=DegToRad(Variation); 
           StoreVariation(DegToRad(Variation),Boatdata.Datetime.DaysSince1970);
           SetN2kPGN127258(N2kMsg, SID,Boatdata.Heading.source,Boatdata.Datetime.DaysSince1970,DegToRad(Variation));
-          NMEA2000_2.SendMsg(N2kMsg);
-         
+          if (NMEA2000_2.SendMsg(N2kMsg)){
+            BlinkLed(); 
+          }
        }else{
           SetN2kPGN127258(N2kMsg, SID,Boatdata.Heading.source,configuration.DaysSince1970,configuration.Variation);
-          NMEA2000_2.SendMsg(N2kMsg);
-        
+          if (NMEA2000_2.SendMsg(N2kMsg)){
+            BlinkLed(); 
+          }
        }
    }
 }
