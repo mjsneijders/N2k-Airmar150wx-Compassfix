@@ -170,18 +170,17 @@ void loop() {
     NMEA2000.ParseMessages();
     NMEA2000_2.ParseMessages();
     N2kSendVariation();
-    //BlinkLed(); 
 }
 
-#define VariationUpdatePeriod 1000
+
 void BlinkLed(){
   static bool onoff = LOW; 
   watchdogReset();
   onoff = !onoff; 
-  Serial.println ((String)"led is now " + onoff); 
   digitalWrite(LED_BUILTIN,onoff); 
 }
 
+#define VariationUpdatePeriod 1000
 void N2kSendVariation() {
   static unsigned long TimeUpdated=millis();
   static unsigned char SID=0; 
