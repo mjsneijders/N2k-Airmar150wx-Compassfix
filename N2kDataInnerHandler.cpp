@@ -81,7 +81,6 @@ void tN2kInnerHandler::HandleWind(const tN2kMsg &N2kMsg) {
   tN2kWindReference WindReference;
   double Heading; 
   double WindSpeed, WindAngle; 
-  double x, y;
   double TWS, TWA, TWD;
   double SOG, COG; 
 
@@ -183,14 +182,15 @@ function takes 228 microSeconds on arduino Due.
 Include math.h for M_PI, sin(), cos() and atan2() functions
 
 Input Variables: 
-Heading = Compass heading ( prefereably TRUE,  but Magnetic should be okay is the display also uses Magnetic)
-SOG = Speed over Ground from GPS
-COG = Course over Ground from GPS
-AWS = Appearant Wind Speed from Wind device ( meters per second).
-AWA = Appearant Wind Angle from wind device,  +/- pi radials,  relative to ship centerline. 
-TWS = Theoretical Wind Speed
-TWD = Theoretical Wind Direction, relative to compass heading
-TWA = Theoretical Wind Angle, relative to ship centerline
+Heading = Compass heading ( prefereably TRUE,  but Magnetic should be okay if the display also uses Magnetic)
+SOG = Speed over Ground from GPS (m/s)
+COG = Course over Ground from GPS (radials)
+AWS = Appearant Wind Speed from Wind device (m/s).
+AWA = Appearant Wind Angle from wind device, relative to ship centerline. (radials)
+Output Variables: 
+TWS = Theoretical Wind Speed (m/s)
+TWD = Theoretical Wind Direction, relative to north (radials)
+TWA = Theoretical Wind Angle, relative to ship centerline (radials)
 
 //*/
 
