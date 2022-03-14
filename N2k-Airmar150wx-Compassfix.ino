@@ -43,25 +43,7 @@ void setup_can1(){
     char SnoStr[33];
     uint32_t SerialNumber=GetSerialNumber();
     snprintf(SnoStr,32,"%lu",(long unsigned int)SerialNumber);
-    NMEA2000.SetProductInformation(SnoStr, // Manufacturer's Model serial code. 
-                                     100, // Manufacturer's product code
-                                     "Simple battery monitor",  // Manufacturer's Model ID
-                                     "1.0.0.2 (2017-06-13)",  // Manufacturer's Software version code
-                                     "1.0.0.0 (2017-06-13)", // Manufacturer's Model version
-                                     0xff, // load equivalency - use default
-                                     0xffff, // NMEA 2000 version - use default
-                                     0xff, // Sertification level - use default
-                                     0
-                                     );
-    // Set device information for temperature monitor
-    NMEA2000.SetDeviceInformation(SerialNumber, // Unique number. Use e.g. Serial number.
-                                  130, // Device function=Temperature. See codes on http://www.nmea.org/Assets/20120726%20nmea%202000%20class%20&%20function%20codes%20v%202.00.pdf
-                                  75, // Device class=Sensor Communication Interface. See codes on  http://www.nmea.org/Assets/20120726%20nmea%202000%20class%20&%20function%20codes%20v%202.00.pdf
-                                  2040, // Just choosen free from code list on http://www.nmea.org/Assets/20121020%20nmea%202000%20registration%20list.pdf                               
-                                  4, // Marine
-                                  0
-                                 );
-    
+   
     NMEA2000.SetForwardStream(&Serial);
     // NMEA2000.SetForwardType(tNMEA2000::fwdt_Text); // Show in clear text. Leave uncommented for default Actisense format.
     NMEA2000.SetMode(tNMEA2000::N2km_ListenAndNode,36);
